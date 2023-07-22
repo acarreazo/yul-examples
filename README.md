@@ -44,3 +44,23 @@ Bytecodes
 You can check the all aperations in this link https://docs.soliditylang.org/en/latest/yul.html#yul-optimizer
 
 ####  Control flow
+
+####  Uses cases
+A good use case using yul with solidity is related to storage date
+```solidity
+contract StoringData {
+  function setData(uint256 newValue) public {
+    assembly {
+      sstore(0, newValue)
+    }
+  }
+
+  function getData() public view returns(uint256) {
+    assembly {
+      let v := sload(0)
+      mstore(0x80, v)
+      return(0x80, 32)
+    }
+  }
+}
+```
